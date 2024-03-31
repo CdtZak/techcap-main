@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet"  type="text/css" href="/style.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    </head>
+    <header></header>
+    <body>
+        <h1>PRODUCT</h1>
+        <div class="container">
+        <div class="pc-info">
+        
+       <p><%= data.name%></p>
+       <p>model ref:<%= data.specs.ref%></p>
+       <p>state:<%= data.specs.state%></p> 
+       <p>CPU:<%= data.specs.cpu%></p>
+       <p>GPU:<%= data.specs.gpu%></p>
+       <p>SCREEN:<%= data.specs.screen%></p>
+       <p>RAM:<%= data.specs.ram%></p>
+       <p>STORAGE:<%= data.specs.storage%></p>
+       <button class="purchase">PURCHASE</button>
+       <p class="price"><%= data.price%> Millions</p>
+       </div>
+       <div class="pc-imgs">
+        <img class="first-img" src=<%=data.images[0] %>>
+        <img class="sub-img" src=<%=data.images[0] %>>
+        <img class="sub-img" src=<%=data.images[1] %>>
+        <img class="sub-img" src=<%=data.images[2] %>>
+        <img class="sub-img" src=<%=data.images[3] %>>
+       </div>
+       </div>
+       
+        <form class="order-model">
+            <button class="close-btn">X</button>
+            <input type="hidden" class="productId" value="<%= data._id %>"> 
+            <label for="name">Full name:</label>
+            <input type="text" class="fullName" name="fname">
+            <label for="number">Phone number:</label>
+            <input type="text" class="phoneNumber" name="fname">
+            <label for="number">Wilaya :</label>
+            <input type="text" class="wilaya" name="lname" ><br>
+            <input class ="sub-btn" type="submit" value="Submit">
+            <p class="msg"></p>
+          </form> 
+       
+        <script>
+            
+            const purchaseBtn = document.querySelector('.purchase')
+            const closeBtn = document.querySelector('.close-btn')
+            const subBtn = document.querySelector('.sub-btn')
+            const msg = document.querySelector('.msg')
+         document.addEventListener("DOMContentLoaded", function() {
+    const mainImg = document.querySelector('.first-img');
+    const subImgs = document.querySelectorAll('.sub-img');
+
+    subImgs.forEach(function(subImg) {
+        subImg.addEventListener('click', function() {
+            mainImg.src = subImg.src;
+        });
+    });
+});
+
+purchaseBtn.addEventListener('click', function() {
+            document.querySelector('.order-model').style.display = 'flex'
+        });
+        closeBtn.addEventListener('click', function() {
+            event.preventDefault();
+            document.querySelector('.order-model').style.display = 'none'
+        });
+        subBtn.addEventListener('click',  function(event) {
+                event.preventDefault();
+
+                const fullname = document.querySelector('.fullName').value;
+                const number = document.querySelector('.phoneNumber').value;
+                const wiliya = document.querySelector('.wilaya').value;
+                const productId = document.querySelector('.productId').value
+                console.log(`the id is : ${productId}`)
+
+                const formData = {
+                    fullname: fullname,
+                    number: number,
+                    wiliya: wiliya,
+                    productId:productId
+                };
+
+                
+                fetch('http://localhost:3000/addOrder', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data.message || data.data.message);
+                    
+                    msg.innerHTML = data.message || data.data.message
+                    
+                })
+                .catch((error) => {
+    console.log('Failed:', error);
+    
+});
+            });
+        
+        
+        
+        </script>
+    </body>
+</html>
