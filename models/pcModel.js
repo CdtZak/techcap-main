@@ -43,7 +43,8 @@ const pcSchema = new mongoose.Schema({
         
     },
     available:{
-        type:Boolean
+        type:Boolean,
+        default:true
     }
 })
 const pc = mongoose.model('pc',pcSchema)

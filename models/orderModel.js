@@ -20,8 +20,8 @@ const orderSchema = new mongoose.Schema({
     },
     status:{
         type: String,
-        enum: ['unconfirmed', 'confirmed', 'delivered'], 
-        default: 'unconfirmed' 
+        enum: ['Unconfirmed', 'Confirmed', 'Delivered'], 
+        default: 'Unconfirmed' 
     },
     productId:{
         type:String,

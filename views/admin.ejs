@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Admin</title>
+</head>
+<body>
+    <h1>Welcome Admin!</h1>
+
+    <div>
+        <h2>PRODUCTS</h2>
+        <% products.forEach(product => { %>
+            <p><%= product.name %></p>
+            <p>Specs:<%= product.specs %></p>
+            <p >Product Id:<%= product._id %></p>
+            <p>Price:<%= product.price %></p>
+            <button class="delete-button" data-product-id=<%= product._id %>  >delete </button>
+        <% }); %>
+        <form>
+            <label for="name">name:</label><br>
+            <input type="text" ><br>
+        
+            <label for="cpu">CPU:</label><br>
+            <input type="text" ><br>
+        
+            <label for="name">name:</label><br>
+    <input type="text" id="name"><br>
+
+    <label for="cpu">CPU:</label><br>
+    <input type="text" id="cpu"><br>
+
+    <label for="gpu">GPU:</label><br>
+    <input type="text" id="gpu"><br>
+
+    <label for="screen">screen:</label><br>
+    <input type="text" id="screen"><br>
+
+    <label for="ram">ram:</label><br>
+    <input type="text" id="ram"><br>
+
+    <label for="storage">storage:</label><br>
+    <input type="text" id="storage"><br>
+
+    <label for="ref">ref:</label><br>
+    <input type="text" id="ref"><br>
+
+    <label for="images">images:</label><br>
+    <input type="text" id="images"><br>
+
+    <label for="state">state:</label><br>
+    <input type="text" id="state"><br>
+
+    <label for="price">price:</label><br>
+    <input type="text" id="price"><br>
+          </form>
+        
+    </div>
+    <button id="add-btn">Add a new product</button>
+    <div>
+        <h2>ORDERS</h2>
+        <% orders.forEach((order,i) => { %>
+        <p>order N<%= i+1 %> </p>
+            <p> fullname:<%= order.fullname %></p>
+            <p>Phone number:<%=order.number %></p>
+            <p>Wilaya :<%=order.wiliya %></p>
+            <p>Product Id:<%=order.productId %></p>
+            <select id="state">
+                <option value= <%= order.status %>><%= order.status %></option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Delivered">Delivered</option>
+              </select>
+              <button>Update state</button>
+            <p>Ordered at :<%=order.createdAt %></p>
+        <% }); %>
+    </div>
+    <script>
+        //ADD PC 
+        document.addEventListener('DOMContentLoaded', function() {
+    // Find the button element
+    let addButton = document.querySelector('#add-btn');
+
+    // Add event listener to the button
+    addButton.addEventListener('click', function() {
+        // Extract data from form fields
+        let name = document.querySelector('#name').value;
+        let cpu = document.querySelector('#cpu').value;
+        let gpu = document.querySelector('#gpu').value;
+        let screen = document.querySelector('#screen').value;
+        let ram = document.querySelector('#ram').value;
+        let storage = document.querySelector('#storage').value;
+        let ref = document.querySelector('#ref').value;
+        let images = document.querySelector('#images').value;
+        let state = document.querySelector('#state').value;
+        let price = document.querySelector('#price').value;
+
+        
+        let data = {
+            name: name,
+            price: 16,
+            images: images.split(','), 
+            specs: {
+                cpu: cpu,
+                gpu: gpu,
+                screen: screen,
+                ref: ref,
+                state: state
+            }
+        };
+
+        // Perform POST request to http://localhost:3000/addpc
+        fetch('http://localhost:3000/addpc', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Product added successfully');
+                setTimeout(() => {
+            location.reload();
+        }, 1000); 
+                // Optionally, you can perform any action upon successful addition
+            } else {
+                console.error('Failed to add product');
+                // Handle the error or display an error message to the user
+            }
+        })
+        .catch(error => {
+            console.error('Error occurred while adding product:', error);
+            // Handle any network errors or exceptions that occur during the addition process
+        });
+    });
+});
+        //DELETE PC 
+        document.querySelectorAll('.delete-button').forEach(button => {
+        button.addEventListener('click', function() {
+            
+            const productId = this.getAttribute('data-product-id');
+            console.log('Deleting product with ID:', productId);
+
+            
+            fetch('http://127.0.0.1:3000/deleteProduct', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId: productId })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Product deleted successfully');
+                    setTimeout(() => {
+            location.reload();
+        }, 1000); 
+                   
+                } else {
+                    console.error('Failed to delete product');
+                    
+                }
+            })
+            .catch(error => {
+                console.error('Error occurred while deleting product:', error);
+                
+            });
+        });
+    });
+    </script>
+</body>
+</html>
