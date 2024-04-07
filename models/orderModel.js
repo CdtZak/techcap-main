@@ -21,7 +21,7 @@ const orderSchema = new mongoose.Schema({
     status:{
         type: String,
         enum: ['Unconfirmed', 'Confirmed', 'Delivered'], 
-        default: 'Unconfirmed' 
+        default: 'Unconfirmed'
     },
     productId:{
         type:String,

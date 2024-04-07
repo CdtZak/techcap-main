@@ -3,15 +3,15 @@ const pc = require('../models/pcModel')
 
 exports.getUrl = async (req,res,next)=>{
     try{
-        const data = await pc.find(); // Replace 'YourModel' with the actual name of your Mongoose model
+        const data = await pc.find(); 
         
-        // Extract images from the data
+       
         const images = data.map(item => ({
-            url: item.images[0], // Extract the first image URL
-            id: item._id // Extract the ID of the element
+            url: item.images[0], 
+            id: item._id 
         }));
         
-        // Respond with a JSON containing the extracted images
+        
         res.status(200).json({
             status: 'success',
             data:images,

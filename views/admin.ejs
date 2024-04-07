@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"  type="text/css" href="/style.css">
     <title>Welcome Admin</title>
 </head>
 <body>
@@ -57,32 +58,48 @@
         
     </div>
     <button id="add-btn">Add a new product</button>
-    <div>
-        <h2>ORDERS</h2>
+    <h2>ORDERS</h2>
+    <div class="order-section">
+     
+        <p>Order number</p>
+        <p>Name</p>
+        <p>Phone</p>
+        <p>Wiliya</p>
+        <p>Product Id</p>
+        
+        <p>status</p>
+        <p>Order at</p>
+        <p>update</p>
+        <p>delete</p>
         <% orders.forEach((order,i) => { %>
         <p>order N<%= i+1 %> </p>
-            <p> fullname:<%= order.fullname %></p>
-            <p>Phone number:<%=order.number %></p>
-            <p>Wilaya :<%=order.wiliya %></p>
-            <p>Product Id:<%=order.productId %></p>
+            <p> <%= order.fullname %></p>
+            <p><%=order.number %></p>
+            <p><%=order.wiliya %></p>
+            <p><%=order.productId %></p>
             <select id="state">
                 <option value= <%= order.status %>><%= order.status %></option>
                 <option value="Confirmed">Confirmed</option>
                 <option value="Delivered">Delivered</option>
+                <option value="Unconfirmed">Unconfirmed</option>
+                <p><%=order.createdAt %></p>
               </select>
-              <button>Update state</button>
-            <p>Ordered at :<%=order.createdAt %></p>
+              <button name="updateState" data-order-id=<%= order._id %> >Update state</button>
+           
+            <button name="deleteOrder" data-order-id=<%= order._id %> >Delete order</button>
         <% }); %>
+
     </div>
+    
     <script>
         //ADD PC 
         document.addEventListener('DOMContentLoaded', function() {
-    // Find the button element
+    
     let addButton = document.querySelector('#add-btn');
 
-    // Add event listener to the button
+    
     addButton.addEventListener('click', function() {
-        // Extract data from form fields
+    
         let name = document.querySelector('#name').value;
         let cpu = document.querySelector('#cpu').value;
         let gpu = document.querySelector('#gpu').value;
@@ -108,7 +125,7 @@
             }
         };
 
-        // Perform POST request to http://localhost:3000/addpc
+        
         fetch('http://localhost:3000/addpc', {
             method: 'POST',
             headers: {
@@ -122,15 +139,14 @@
                 setTimeout(() => {
             location.reload();
         }, 1000); 
-                // Optionally, you can perform any action upon successful addition
-            } else {
+                
                 console.error('Failed to add product');
-                // Handle the error or display an error message to the user
+                
             }
         })
         .catch(error => {
             console.error('Error occurred while adding product:', error);
-            // Handle any network errors or exceptions that occur during the addition process
+           
         });
     });
 });
@@ -167,6 +183,74 @@
             });
         });
     });
+    //UPDATE ORDER STATUS
+    document.addEventListener('DOMContentLoaded', function() {
+    const updateButtons = document.querySelectorAll('button[name="updateState"]');
+
+    updateButtons.forEach(button => {
+        button.addEventListener('click', async function(event) {
+            const orderId = button.dataset.orderId;
+            const newState = button.previousElementSibling.value;
+            console.log(orderId,newState)
+
+            try {
+                const response = await fetch('http://127.0.0.1:3000/updateOrder', {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        orderId: orderId,
+                        state: newState
+                    })
+                });
+
+                const data = await response.json();
+                console.log(data); 
+
+            } catch (error) {
+                console.error('Error updating order:', error);
+            }
+        });
+    });
+});
+//DELETE ORDER 
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteButtons = document.querySelectorAll('button[data-order-id][name="deleteOrder"]');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', async function(event) {
+            const orderId = button.dataset.orderId;
+
+            try {
+                const response = await fetch(`http://127.0.0.1:3000/deleteOrder`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        orderId: orderId,
+                        
+                    })
+                });
+
+                if (response.ok) {
+                    console.log('Order deleted successfully');
+                    
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    console.error('Failed to delete order');
+                }
+
+            } catch (error) {
+                console.error('Error deleting order:', error);
+            }
+        });
+    });
+});
+
     </script>
 </body>
 </html>
