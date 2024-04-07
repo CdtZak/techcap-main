@@ -77,13 +77,14 @@
             <p><%=order.number %></p>
             <p><%=order.wiliya %></p>
             <p><%=order.productId %></p>
+            
             <select id="state">
                 <option value= <%= order.status %>><%= order.status %></option>
                 <option value="Confirmed">Confirmed</option>
                 <option value="Delivered">Delivered</option>
                 <option value="Unconfirmed">Unconfirmed</option>
-                <p><%=order.createdAt %></p>
               </select>
+              <p><%=order.createdAt %></p>
               <button name="updateState" data-order-id=<%= order._id %> >Update state</button>
            
             <button name="deleteOrder" data-order-id=<%= order._id %> >Delete order</button>
@@ -186,12 +187,15 @@
     //UPDATE ORDER STATUS
     document.addEventListener('DOMContentLoaded', function() {
     const updateButtons = document.querySelectorAll('button[name="updateState"]');
-
+   
+    
     updateButtons.forEach(button => {
         button.addEventListener('click', async function(event) {
             const orderId = button.dataset.orderId;
-            const newState = button.previousElementSibling.value;
-            console.log(orderId,newState)
+            const select = document.querySelectorAll('#state')
+        
+            console.log(orderId, /*newState,*/ select , event.target.dataset.orderId);
+            
 
             try {
                 const response = await fetch('http://127.0.0.1:3000/updateOrder', {
@@ -201,7 +205,7 @@
                     },
                     body: JSON.stringify({
                         orderId: orderId,
-                        state: newState
+                        /*state: newState*/
                     })
                 });
 
