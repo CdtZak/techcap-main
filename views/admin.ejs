@@ -72,22 +72,24 @@
         <p>update</p>
         <p>delete</p>
         <% orders.forEach((order,i) => { %>
-        <p>order N<%= i+1 %> </p>
+            <p>order N<%= i+1 %> </p>
             <p> <%= order.fullname %></p>
             <p><%=order.number %></p>
             <p><%=order.wiliya %></p>
             <p><%=order.productId %></p>
             
-            <select id="state">
+            <select class="state" id=<%=order._id%>>
                 <option value= <%= order.status %>><%= order.status %></option>
                 <option value="Confirmed">Confirmed</option>
                 <option value="Delivered">Delivered</option>
                 <option value="Unconfirmed">Unconfirmed</option>
+                
               </select>
               <p><%=order.createdAt %></p>
-              <button name="updateState" data-order-id=<%= order._id %> >Update state</button>
-           
+              
+              <button name="updateState"    data-order-id=<%= order._id %> >Update </button>
             <button name="deleteOrder" data-order-id=<%= order._id %> >Delete order</button>
+           
         <% }); %>
 
     </div>
@@ -192,9 +194,39 @@
     updateButtons.forEach(button => {
         button.addEventListener('click', async function(event) {
             const orderId = button.dataset.orderId;
-            const select = document.querySelectorAll('#state')
-        
-            console.log(orderId, /*newState,*/ select , event.target.dataset.orderId);
+            let states = []
+            let ids = []
+            const selectors = document.querySelectorAll('.state')
+            selectors.forEach(ele =>{
+                states.push(ele.value)
+            })
+            updateButtons.forEach(btn =>{
+                ids.push(btn.dataset.orderId)
+            })
+            const mergedArray = [];
+
+
+for (let i = 0; i < ids.length; i++) {   
+    const obj = {
+        id: ids[i],
+        state: states[i]
+    };
+    mergedArray.push(obj);
+}
+function getStateById(id) {
+    for (let i = 0; i < mergedArray.length; i++) {
+        if (mergedArray[i].id === id) {
+            return mergedArray[i].state;
+        }
+    }
+    return null;
+}
+
+const idToFind = '6612a02c66f4ea12b730b7dd';
+const newState = getStateById(orderId);
+
+
+            console.log(orderId, newState);
             
 
             try {
@@ -205,7 +237,7 @@
                     },
                     body: JSON.stringify({
                         orderId: orderId,
-                        /*state: newState*/
+                        state: newState
                     })
                 });
 
