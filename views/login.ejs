@@ -15,12 +15,13 @@
 
     <script>
         async function login(username, password) {
+            
             try {
                 const response = await fetch('http://localhost:3000/auth', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: ( {
+                        'Content-Type': 'application/json',
+                    }),
                     body: JSON.stringify({ username, password })
                 });
 
@@ -29,15 +30,15 @@
                 }
 
                 const data = await response.json();
-                const token = data.token; // Extract token from response
+                let token = data.token; 
                 console.log('Login successful. Token:', token);
+               
+                
 
-                // Store token in local storage
-                localStorage.setItem('token', token);
-
-                // Redirect or perform other actions as needed
-                // For example, redirect to a protected route
-                window.location.href = '/admin';
+               
+                
+               
+           
             } catch (error) {
                 console.error('Login error:', error.message);
             }

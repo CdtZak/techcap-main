@@ -62,7 +62,7 @@ exports.auth = async (req,res,next)=>{
     try {
         
         const Admin = await admin.findOne({ username });
-        if (!Admin) {
+       if (!Admin) {
             return res.status(404).send('Admin not found');
         }
 
@@ -74,8 +74,18 @@ exports.auth = async (req,res,next)=>{
 
         
         const token = jwt.sign({ userId: Admin._id }, 'secret-key', { expiresIn: '1h' });
-        console.log(req.headers['authorization'])
-        res.json({ token });
+        
+    
+       res.cookie("token",token,{
+            httpOnly:true,
+            
+        })
+        
+        
+        res.status(201).json({ token });
+        
+        
+        
     } catch (error) {
         res.status(500).send('Error logging in');
     }
@@ -83,9 +93,10 @@ exports.auth = async (req,res,next)=>{
 
 }
 exports.protect = (req, res, next) => {
-console.log(req.headers)
-    const token = req.headers["authorization"]
-
+    
+console.log(req.headers.cookie)
+   let token = req.headers.cookie.split('=')[1];
+    
     
     if (!token) {
         return res.status(401).json({ message: 'Access denied. No token provided.' });
