@@ -94,7 +94,7 @@ exports.auth = async (req,res,next)=>{
 }
 exports.protect = (req, res, next) => {
     
-console.log(req.headers.cookie)
+
    let token = req.headers.cookie.split('=')[1];
     
     
