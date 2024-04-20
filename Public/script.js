@@ -5,7 +5,7 @@ const nxtImg = document.getElementById('nxt-img');
 const prvImg = document.getElementById('prv-img');
 const centerImg = document.getElementById('center-img');
 //fetching display imgs and Ids form DB
-fetch('http://localhost:3000/getUrl')
+fetch('https://techcap-main.onrender.com/getUrl')
             .then(response => response.json())
             .then(data => {
                 
@@ -30,7 +30,7 @@ fetch('http://localhost:3000/getUrl')
             .catch(error => console.error('Error fetching data:', error));
             function redirectToProductPage(productId) {
     
-                window.location.href = `http://localhost:3000/product/${productId}`;
+                window.location.href = `https://techcap-main.onrender.com/product/${productId}`;
             }
 //Carousel menu function
 nxtBtn.addEventListener('click', function() {
