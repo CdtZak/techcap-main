@@ -4,7 +4,8 @@ body{
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; /* Resize the background image to cover the entire container */
     font-family: "orbitron";
-    font-weight: bolder
+    font-weight: bolder;
+    
 }
 header{
     display: flex;
@@ -50,6 +51,12 @@ margin-top: -170px;
 
 
 
+}
+.back-img{
+  position: relative;
+  z-index: 1;
+
+  
 }
 .mobile{
   display: none;
@@ -320,6 +327,25 @@ background-color: rgb(45, 44, 44);
     grid-template-columns: repeat(9, 1fr);
     grid-template-rows: repeat(3, 1fr);
   }
+.contact-icon{
+  width: 50px;
+  height: 50px
+
+}
+  .contact{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    color: white;
+    justify-items:center;
+    justify-content:space-around;
+    margin-top: 50px;
+  }
+  .contact > p:last-child {
+    grid-column: 3 / 4;
+  }
+  .contact-text{
+    margin-top: 100px;
+  }
   
   /*MEDIA QUERY*/
   @media screen and (max-width: 767px) {
@@ -363,6 +389,8 @@ background-color: rgb(45, 44, 44);
     
     
   }
+  
+  
   .display{
     margin-top: 100px;
   }
@@ -405,5 +433,25 @@ margin-left: 0px;
 }
 .mobile{
   display: block;
+}
+.contact-text{
+  margin-top: 280px;
+  
+
+}
+.contact{
+  background-color: #060022;
+  font-size: small;
+  margin-left: 10pxF;
+  
+
+
+}
+.contact-icon{
+  width: 35px;
+  height: 35px;
+}
+body{
+  background-color: #060022;
 }
 }
