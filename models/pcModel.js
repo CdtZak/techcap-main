@@ -39,7 +39,7 @@ const pcSchema = new mongoose.Schema({
         type:String,
         }],
     price:{
-        type:Number,
+        type:String,
         
     },
     available:{
